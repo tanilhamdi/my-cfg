@@ -1,7 +1,7 @@
--- Lazy.nvim yükleyicisi
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-  print("lazy.nvim bulunamadı, indiriliyor...")
+  print("lazy.nvim not found, downloading...")
   vim.fn.system({
     "git",
     "clone",
@@ -13,25 +13,21 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Lazy'nin yüklendiğini kontrol et
 if not pcall(require, "lazy") then
-  print("lazy.nvim yüklenemedi!")
+  print("lazy.nvim failed to load!")
   return
 end
 
--- Temel ayarlar
-vim.opt.number = true          -- Satır numaralarını göster
-vim.opt.relativenumber = true  -- Göreceli satır numaraları
-vim.opt.tabstop = 2            -- Tab genişliği
-vim.opt.shiftwidth = 2         -- Girinti genişliği
-vim.opt.expandtab = true       -- Tab yerine boşluk kullan
-vim.opt.smartindent = true     -- Akıllı girinti
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+vim.opt.smartindent = true
 
--- Eski BufWritePre autocommand'lerini temizle
 vim.api.nvim_clear_autocmds({ event = "BufWritePre", group = vim.api.nvim_create_augroup("LspFormatting", {}) })
 
 require("lazy").setup({
-  -- Mevcut cmp eklentisi
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -68,7 +64,6 @@ require("lazy").setup({
       })
     end,
   },
-  -- Otomatik parantez kapatma
   {
     "windwp/nvim-autopairs",
     config = function()
@@ -78,7 +73,6 @@ require("lazy").setup({
       cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
     end,
   },
-  -- LSP eklentileri
   "neovim/nvim-lspconfig",
   {
     "williamboman/mason.nvim",
@@ -92,7 +86,6 @@ require("lazy").setup({
       })
     end,
   },
-  -- Dosya gezgini
   {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -100,7 +93,6 @@ require("lazy").setup({
       require("nvim-tree").setup {}
     end,
   },
-  -- Tema
   {
     "folke/tokyonight.nvim",
     config = function()
@@ -120,7 +112,6 @@ require("lazy").setup({
       vim.cmd([[colorscheme tokyonight]])
     end,
   },
-  -- Statü çubuğu
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -130,7 +121,6 @@ require("lazy").setup({
       }
     end,
   },
-  -- Kod formatlama ve lint
   {
     "nvimtools/none-ls.nvim",
     config = function()
@@ -160,14 +150,12 @@ require("lazy").setup({
       })
     end,
   },
-  -- Git entegrasyonu
   {
     "lewis6991/gitsigns.nvim",
     config = function()
       require("gitsigns").setup()
     end,
   },
-  -- Arama ve bulma
   {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -177,7 +165,6 @@ require("lazy").setup({
       vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep, {})
     end,
   },
-  -- Kod parçalama
   {
     "nvim-treesitter/nvim-treesitter",
     config = function()
@@ -187,15 +174,12 @@ require("lazy").setup({
       }
     end,
   },
-  -- Snippet desteği
   "rafamadriz/friendly-snippets",
 })
 
--- LSP ayarları
 local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
--- HTML LSP ile snippet desteği
 lspconfig.html.setup {
   capabilities = require("cmp_nvim_lsp").default_capabilities({
     textDocument = {
@@ -209,17 +193,15 @@ lspconfig.html.setup {
   cmd = { "vscode-html-language-server", "--stdio" },
 }
 
--- CSS LSP
 lspconfig.cssls.setup {
   capabilities = capabilities,
   cmd = { "vscode-css-language-server", "--stdio" },
 }
 
--- JavaScript/TypeScript LSP
 lspconfig.ts_ls.setup {
   capabilities = capabilities,
   on_attach = function(client, bufnr)
-    print("ts_ls başlatıldı!")
+    print("ts_ls started!")
   end,
   cmd = { "typescript-language-server", "--stdio" },
   init_options = {
@@ -227,7 +209,6 @@ lspconfig.ts_ls.setup {
   },
 }
 
--- Transparanlık için ek highlight ayarları
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "none" })
