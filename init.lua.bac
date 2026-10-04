@@ -172,15 +172,6 @@ require("lazy").setup({
     end,
   },
 
-  -- Auto-close / auto-rename tags (VS Code-style HTML tag editing)
-  {
-    "windwp/nvim-ts-autotag",
-    ft = { "html", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
-    config = function()
-      require("nvim-ts-autotag").setup()
-    end,
-  },
-
   -- Dracula Tema (Haskell Purple mod)
   {
     "Mofiqul/dracula.nvim",
@@ -330,7 +321,7 @@ require("lazy").setup({
           "html", "cssls", "ts_ls", "htmx", "clangd", "pyright",
           "jdtls", "zls", "rust_analyzer", "vue_ls", "vtsls",
           "svelte", "gopls", "texlab", "bashls", "powershell_es", "hls",
-          "ocamllsp", "asm_lsp", "emmet_language_server"
+          "ocamllsp", "asm_lsp"
         },
         automatic_installation = true,
         handlers = {
@@ -404,17 +395,6 @@ require("lazy").setup({
               filetypes = { "ps1", "psm1", "psd1" },
               settings = {
                 powershell = { scriptAnalysis = { enable = true } },
-              },
-            }
-          end,
-          ["emmet_language_server"] = function()
-            require("lspconfig").emmet_language_server.setup {
-              capabilities = require("cmp_nvim_lsp").default_capabilities(),
-              on_attach = lsp_on_attach,
-              filetypes = {
-                "html", "css", "scss", "less",
-                "javascriptreact", "typescriptreact",
-                "vue", "svelte",
               },
             }
           end,
